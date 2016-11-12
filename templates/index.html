@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='stupid.css') }}">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva ScheduleBot</title>
+</head>
+<body>
+    <div class="fill center" style="height:240px; background:url(http://www.lmsarch.com/sites/default/files/project/NHS_01.jpg);background-position:center center;padding-top:5px">
+        <h1>
+            Nueva ScheduleBot
+        </h1>
+    </div>
+    <div class="padded max900">
+        <h4>
+            <p>
+                Welcome to Nueva ScheduleBot, the friendly way to prevent block scheduling from giving you an aneurysm.
+            </p>
+        </h4>
+            <div class="padded" style="margin-left:50px">
+                <ol>
+                    <li>Make a copy of the <a target="_blank" href="
+https://docs.google.com/spreadsheets/d/1rJ2Sfd-YpnScN5gZpPP8pYMbVXe-3h1PX2kFb8R7CUg/edit?usp=sharing
+">2016-2017 Schedule</a> by going to File-&gt;Make a copy</li>
+                    <li><span style="display: inline;">Share the copy with <span id="copyTarget">kinetic-anvil-143100@appspot.gserviceaccount.com</span></li> <button id="copyButton"> Copy email to clipboard</button></span>
+                    <li>Fill in your Classes below. Rooms and Teachers are optional.</li>
+                    <li>Click to "Go!" button</li>
+                    <li>Be patient! ScheduleBot can take some time to get going. You can go to the new schedule to see the bot in action.</li>
+                    <li>Revel in the awesomeness of your new schedule</li>
+                    <li>Email me (Ethan) at ethknig@nuevaschool.org if it didn't work</li>
+                </ol>
+                <br>
+                <div class="center">
+                    <h4>Enter your classes here:</h4>
+                </div>
+            </div>
+    </div>
+    <div class="max900">
+      <div class="container">
+        <div class="compressible" class="fill">
+            <div id="blockform">
+              <form id="form" name="form" method="post" action="classUpload" enctype="multipart/form-data" onsubmit="return afterSubmit();">
+                  <div class ="container padded center">
+                    <div class="quarter">
+                      <div>
+                        <label>Class</label> <br>
+                      </div>
+                      <input type="text" name="block1class" id="block1class" placeholder="Block 1" tabindex="1"/>
+                      <input type="text" name="block2class" id="block2class" placeholder="Block 2" tabindex="4"/>
+                      <input type="text" name="block3class" id="block3class" placeholder="Block 3" tabindex="7"/>
+                      <input type="text" name="block4class" id="block4class" placeholder="Block 4" tabindex="10"/>
+                      <input type="text" name="block5class" id="block5class" placeholder="Block 5" tabindex="13"/>
+                      <input type="text" name="block6class" id="block6class" placeholder="Block 6" tabindex="16"/>
+                      <input type="text" name="block7class" id="block7class" placeholder="Block 7" tabindex="19"/>
+                      <input type="text" name="block8class" id="block8class" placeholder="Block 8" tabindex="22"/>
+                    </div>
+                    <div class="quarter">
+                      <div>
+                        <label>Room</label> <br>
+                      </div>
+                      <input type="text" name="block1room" id="block1room" tabindex="2"/>
+                      <input type="text" name="block2room" id="block2room" tabindex="5"/>
+                      <input type="text" name="block3room" id="block3room" tabindex="8"/>
+                      <input type="text" name="block4room" id="block4room" tabindex="11"/>
+                      <input type="text" name="block5room" id="block5room" tabindex="14"/>
+                      <input type="text" name="block6room" id="block6room" tabindex="17"/>
+                      <input type="text" name="block7room" id="block7room" tabindex="20"/>
+                      <input type="text" name="block8room" id="block8room" tabindex="23"/>
+                    </div>
+                    <div class="quarter">
+                      <div>
+                        <label>Teacher</label> <br>
+                      </div>
+                      <input type="text" name="block1teacher" id="block1teacher" tabindex="3"/>
+                      <input type="text" name="block2teacher" id="block2teacher" tabindex="6"/>
+                      <input type="text" name="block3teacher" id="block3teacher" tabindex="9"/>
+                      <input type="text" name="block4teacher" id="block4teacher" tabindex="12"/>
+                      <input type="text" name="block5teacher" id="block5teacher" tabindex="15"/>
+                      <input type="text" name="block6teacher" id="block6teacher" tabindex="18"/>
+                      <input type="text" name="block7teacher" id="block7teacher" tabindex="21"/>
+                      <input type="text" name="block8teacher" id="block8teacher" tabindex="24"/>
+                    </div>
+                  </div>
+                  <div class="container padded">
+                      <div class="quarter"><label style="display:block" for="spreadsheeturl">Your Spreadsheet URL:</label></div>
+                      <div class="threequarters"><input type="url" name="spreadsheeturl" id="spreadsheeturl" tabindex="25"/></div>
+                  </div>
+                  <div class="center">
+                      <input type="submit" value="Go!" tabindex="26" id="submitButton">
+                  </div>
+              </form>
+                <div id="progressBar" style="display:none;" class="progress fill"><div class="indeterminate"></div></div>
+            </div>
+            <br><br>
+        </div>
+      </div>
+    </div>
+<script language="JavaScript">
+//stackoverflow.com/questions/22581345/click-button-copy-to-clipboard-using-jquery
+document.getElementById("copyButton").addEventListener("click", function() {
+    copyToClipboard(document.getElementById("copyTarget"));
+});
+
+function copyToClipboard(elem) {
+	  // create hidden text element, if it doesn't already exist
+    var targetId = "_hiddenCopyText_";
+    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+    var origSelectionStart, origSelectionEnd;
+    if (isInput) {
+        // can just use the original source element for the selection and copy
+        target = elem;
+        origSelectionStart = elem.selectionStart;
+        origSelectionEnd = elem.selectionEnd;
+    } else {
+        // must use a temporary form element for the selection and copy
+        target = document.getElementById(targetId);
+        if (!target) {
+            var target = document.createElement("textarea");
+            target.style.position = "absolute";
+            target.style.left = "-9999px";
+            target.style.top = "0";
+            target.id = targetId;
+            document.body.appendChild(target);
+        }
+        target.textContent = elem.textContent;
+    }
+    // select the content
+    var currentFocus = document.activeElement;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+
+    // copy the selection
+    var succeed;
+    try {
+    	  succeed = document.execCommand("copy");
+    } catch(e) {
+        succeed = false;
+    }
+    // restore original focus
+    if (currentFocus && typeof currentFocus.focus === "function") {
+        currentFocus.focus();
+    }
+
+    if (isInput) {
+        // restore prior selection
+        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+    } else {
+        // clear temporary content
+        target.textContent = "";
+    }
+    return succeed;
+}
+</script>
+</body>
+</html>
