@@ -1,3 +1,3 @@
 # schedulebot
 
-remember to run celery, redis, and python
+[schedulebot.ethanknight.xyz](http://schedulebot.ethanknight.xyz)
